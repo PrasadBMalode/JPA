@@ -22,3 +22,25 @@ public class AsusEntity {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
