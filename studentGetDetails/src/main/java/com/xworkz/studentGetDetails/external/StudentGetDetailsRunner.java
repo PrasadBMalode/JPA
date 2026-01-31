@@ -20,7 +20,7 @@ public class StudentGetDetailsRunner {
         StudentGetDetailsEntity data4 = em.find(StudentGetDetailsEntity.class, 4);
         StudentGetDetailsEntity data6 = em.find(StudentGetDetailsEntity.class, 6);
         StudentGetDetailsEntity data11 = em.find(StudentGetDetailsEntity.class, 11);
-        
+
         System.out.println(data1.toString());
         System.out.println(data3.toString());
         System.out.println(data4.toString());
