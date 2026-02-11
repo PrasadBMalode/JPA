@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd3d3c1a-4a92-4b33-81c6-67a157c24af6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../namedQuery/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../namedQuery/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../namedQuery/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../namedQuery/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../saveAndFetch/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../saveAndFetch/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../saveAndFetch/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../saveAndFetch/src/main/webapp/index.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
