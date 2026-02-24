@@ -3,6 +3,7 @@ package com.xworkz.readData.service;
 import com.xworkz.readData.dao.ReadDataDAO;
 import com.xworkz.readData.dto.ReadDataDTO;
 import com.xworkz.readData.entity.ReadDataEntity;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,10 +29,11 @@ public class ReadDataServiceImpl implements ReadDataService {
             readDataEntities.forEach(readDataEntity -> {
 
                 ReadDataDTO readDataDTO = new ReadDataDTO();
-                readDataDTO.setAge(readDataEntity.getAge());
-                readDataDTO.setName(readDataEntity.getName());
-                readDataDTO.setLocation(readDataEntity.getLocation());
-                readDataDTO.setNumber(readDataEntity.getNumber());
+//                readDataDTO.setAge(readDataEntity.getAge());
+//                readDataDTO.setName(readDataEntity.getName());
+//                readDataDTO.setLocation(readDataEntity.getLocation());
+//                readDataDTO.setNumber(readDataEntity.getNumber());
+                BeanUtils.copyProperties(readDataEntity,readDataDTO);
 
                 readDataDTOS.add(readDataDTO);
 
