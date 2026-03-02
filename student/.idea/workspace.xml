@@ -4,39 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd3d3c1a-4a92-4b33-81c6-67a157c24af6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../trip/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/catalina.policy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/catalina.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/context.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/jaspic-providers.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/jaspic-providers.xsd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/logging.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/server.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/tomcat-users.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/tomcat-users.xsd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/.smarttomcat/trip/conf/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/configuration/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/configuration/WebInit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/controler/TripControler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/dao/TripDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/dao/TripDAOImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/dto/TripDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/entity/TripEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/service/TripService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/java/com/xworkz/trip/service/TripServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/resources/META-INF/persistence.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/webapp/index.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../trip/src/main/webapp/readAllDataPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../readData/src/main/webapp/ReadDataPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/../readData/src/main/webapp/ReadDataPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="cd3d3c1a-4a92-4b33-81c6-67a157c24af6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
