@@ -89,4 +89,16 @@ public class DriverServiceImpl implements DriverService {
         return null;
     }
 
+    @Override
+    public void  updateDriverDetails(DriverDTO driverDTO) {
+        DriverEntity driverEntity=new DriverEntity();
+        BeanUtils.copyProperties(driverDTO,driverEntity);
+        driverDAO.updatingDriverDetailsInDB(driverEntity);
+    }
+
+    @Override
+    public void deletingDriverData(String email) {
+        driverDAO.DeletingDataFromDB(email);
+    }
+
 }

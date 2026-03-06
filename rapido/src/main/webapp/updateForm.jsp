@@ -28,9 +28,9 @@
 
                     <!-- ID -->
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Full Name</label>
+                            <label class="form-label fw-semibold">ID</label>
                             <input type="number" class="form-control border-warning focus-ring focus-ring-warning"
-                                name="name" placeholder="Enter your full name" value="${byID.id}" required readonly>
+                                name="id" placeholder="Enter your full name" value="${byID.id}" required readonly>
                         </div>
 
                         <!-- Full Name -->

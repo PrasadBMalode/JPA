@@ -42,7 +42,7 @@ public class DriverControler {
     @GetMapping("/fetchData")
     public String fetchingAllDataListFromDB(Model model) {
         List<DriverDTO> driverDTOS = driverService.fetchingDataValidation();
-        model.addAttribute("driverDTOS", driverDTOS);
+        model.addAttribute("driver", driverDTOS);
         return "fetchedData";
     }
 
@@ -54,5 +54,21 @@ public class DriverControler {
             return "updateForm";
         }
         return "index";
+    }
+
+    @PostMapping("/update")
+    public String updateRequest(DriverDTO driverDTO, Model model){
+        driverService.updateDriverDetails(driverDTO);
+        List<DriverDTO> driverDTOS = driverService.fetchingDataValidation();
+        model.addAttribute("driver", driverDTOS);
+        return "fetchedData";
+    }
+
+    @GetMapping("/deleteData")
+    public String deleteExistData(@RequestParam String email,Model model){
+        driverService.deletingDriverData(email);
+        List<DriverDTO> driverDTOS = driverService.fetchingDataValidation();
+        model.addAttribute("driver", driverDTOS);
+        return "fetchedData";
     }
 }

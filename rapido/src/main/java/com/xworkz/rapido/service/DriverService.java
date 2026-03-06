@@ -13,4 +13,8 @@ public interface DriverService {
     List<DriverDTO> fetchingDataValidation();
 
     DriverDTO findAndFetchDriverValidation(Integer id);
+
+    void updateDriverDetails(DriverDTO driverDTO);
+
+    void deletingDriverData(String email);
 }

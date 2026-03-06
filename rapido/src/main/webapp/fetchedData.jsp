@@ -31,11 +31,12 @@
                     <th class="bg-warning text-dark">Contact Number</th>
                     <th class="bg-warning text-dark">Vehicle Name</th>
                     <th class="bg-warning text-dark">Update</th>
+                    <th class="bg-warning text-dark">Delete</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <c:forEach items="${driverDTOS}" var="singleDTO">
+                <c:forEach items="${driver}" var="singleDTO">
                     <tr>
                         <td>${singleDTO.name}</td>
                         <td>${singleDTO.age}</td>
@@ -43,6 +44,7 @@
                         <td>${singleDTO.contactNumber}</td>
                         <td>${singleDTO.vehical}</td>
                         <td><a href="fetchingForUpdate?id=${singleDTO.id}">UPDATE</a></td>
+                        <td><a href="deleteData?email=${singleDTO.email}">DELETE</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>

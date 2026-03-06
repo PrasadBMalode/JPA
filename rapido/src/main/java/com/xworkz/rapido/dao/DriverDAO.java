@@ -13,4 +13,8 @@ public interface DriverDAO {
     List<DriverEntity> fetchingAllDataFromDB();
 
     DriverEntity findAndFetchDriverFromDB(Integer id);
+
+    void updatingDriverDetailsInDB(DriverEntity driverEntity);
+
+    void DeletingDataFromDB(String email);
 }

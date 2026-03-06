@@ -64,7 +64,6 @@ public class DriverDAOImpl implements DriverDAO{
             Query query = entityManager.createNamedQuery("fetchingAllData");
             List<DriverEntity> resultList =(List<DriverEntity>) query.getResultList();
             return resultList;
-
         }catch (Exception e){
             System.out.println(e.getMessage());
             return Collections.emptyList();
@@ -85,6 +84,42 @@ public class DriverDAOImpl implements DriverDAO{
         }catch (Exception e){
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    @Override
+    public void updatingDriverDetailsInDB(DriverEntity driverEntity) {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            EntityTransaction transaction = entityManager.getTransaction();
+            transaction.begin();
+            entityManager.merge(driverEntity);
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+
+        }finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
+    public void DeletingDataFromDB(String email) {
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        try {
+            EntityTransaction transaction = entityManager.getTransaction();
+            transaction.begin();
+            Query query = entityManager.createNamedQuery("deletingData");
+            query.setParameter("byEmailDeleting",email);
+            query.executeUpdate();
+            transaction.commit();
+
+        }catch (Exception exception){
+            System.out.println(exception.getMessage());
+        }finally {
+            entityManager.close();
         }
     }
 }
