@@ -6,5 +6,6 @@ public interface LoginDAO {
     //String loginDataCheckInDB(String email);
 
     UserEntity findByEmail(String email);
+
     void updateUser (UserEntity user);
 }

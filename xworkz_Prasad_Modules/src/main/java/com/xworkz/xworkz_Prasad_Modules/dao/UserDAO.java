@@ -7,4 +7,8 @@ public interface UserDAO {
     boolean userSaveDB(UserEntity userEntity);
 
     UserEntity checkingExistUserInDBByEmail(String email);
+
+    boolean updatingPasswordInDB(UserEntity userEntity);
+
+
 }

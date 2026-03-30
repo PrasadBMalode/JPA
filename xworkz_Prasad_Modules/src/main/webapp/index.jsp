@@ -1,4 +1,7 @@
 <%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
     <!DOCTYPE html>
     <html lang="en">
@@ -69,10 +72,12 @@
 
                 <h5 style="color:red" id="loginFaile" class="text-center">${loginFailed}</h5>
 
-                <form action="loginPage" method="post">
+                <form action="loginPage" method="post" modelAttribute="loginDTO">
 
                     <div class="mb-3">
                         <input type="email" class="form-control" name="email" placeholder="Enter Email" required>
+                        <small>${emailError}</small>
+                        
                     </div>
 
                     <!-- Password Field with Eye Icon -->
@@ -81,6 +86,7 @@
                             placeholder="Enter Password" style="padding-right:40px;" required>
 
                         <i class="bi bi-eye eye-icon" id="togglePassword" onclick="togglePassword()"></i>
+                        <small>${passwordError}</small>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">Login</button>

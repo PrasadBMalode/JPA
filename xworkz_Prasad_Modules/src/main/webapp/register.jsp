@@ -85,8 +85,9 @@
           <h5 style="color:red" class="text-center">${registerFailed}</h5>
           <h5 style="color:red" class="text-center">${existData}</h5>
 
-          <form action="register" method="post" id="registerForm">
 
+
+          <form action="register" method="post" id="registerForm" enctype="multipart/form-data">
             <div class="row">
 
               <div class="col-md-6 mb-3">
@@ -177,6 +178,13 @@
                   </span>
                 </div>
                 <small class="text-danger" id="confirmPasswordError">${confirmPasswordError}</small>
+              </div>
+
+
+              <div class="col-12 mb-3">
+                <label class="form-label text-primary">Upload Profile</label>
+                <input type="file" class="form-control" id="file" name="file">
+                <small class="text-danger" id="fileError">${fileError}</small>
               </div>
 
 
@@ -286,6 +294,8 @@
         const phoneInput = document.getElementById("phNumber");
         const passwordInput = document.getElementById("password");
         const confirmPasswordInput = document.getElementById("confirmPassword");
+        const fileInput = document.getElementById("file");
+
 
         nameInput.addEventListener("blur", validateName);
         ageInput.addEventListener("blur", validateAge);
@@ -294,6 +304,9 @@
         phoneInput.addEventListener("blur", validatePhone);
         passwordInput.addEventListener("blur", validatePassword);
         confirmPasswordInput.addEventListener("blur", validateConfirmPassword);
+        fileInput.addEventListener("blur", validateFile);
+
+
 
         function validateName() {
 
@@ -416,8 +429,33 @@
 
         }
 
-        document.getElementById("registerForm").addEventListener("submit", function (event) {
 
+        function validateFile() {
+          let file = fileInput.files[0];
+
+          if (!file) {
+            document.getElementById("fileError").innerText = "Please upload a file";
+            return false;
+          }
+          let allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+
+          if (!allowedTypes.includes(file.type)) {
+            document.getElementById("fileError").innerText = "Only JPG, PNG, or PDF allowed";
+            return false;
+          }
+          // Max size = 2MB
+          if (file.size > 2 * 1024 * 1024) {
+            document.getElementById("fileError").innerText = "File size must be less than 2MB";
+            return false;
+          }
+          document.getElementById("fileError").innerText = "";
+          return true;
+        }
+
+
+
+
+        document.getElementById("registerForm").addEventListener("submit", function (event) {
           let valid = true;
 
           if (!validateName()) valid = false;

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @NamedQuery(name = "findByEmail",query = "select nq from UserEntity nq where nq.email=:byEmail")
 @NamedQuery(name = "findByLogin",query = "select nq.password from UserEntity nq where nq.email = :byEmail")
 @NamedQuery(name = "readALlUsers",query = "select nq from UserEntity nq")
+
 public class UserEntity {
 
     @Id
@@ -27,9 +28,14 @@ public class UserEntity {
     private String gender;
     private String location;
     private String email;
-    private Long phNumber;
+    private String phNumber;
     private String password;
     private Integer loginAttempts;
     private Boolean accountLocked=false;
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_file_id")
+    private FileEntity fileEntity;
 
 }

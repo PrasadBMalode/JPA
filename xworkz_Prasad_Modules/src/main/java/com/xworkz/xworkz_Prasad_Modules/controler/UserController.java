@@ -31,6 +31,7 @@ public class UserController {
     @PostMapping("/register")
     public String registration(@Valid UserDTO userDTO, BindingResult bindingResult, Model model) {
 
+        // ================= EXISTING VALIDATION =================
         if (bindingResult.hasErrors()) {
 
             if (bindingResult.hasFieldErrors("name")) {
@@ -86,27 +87,110 @@ public class UserController {
                 model.addAttribute("passwordError", "");
             }
 
-            if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
-                model.addAttribute("confirmPasswordError", "Passwords do not match");
-                model.addAttribute("userDTO", userDTO);
-                return "register";
-            }
-
             model.addAttribute("userDTO", userDTO);
             return "register";
         }
-        String validation = userService.registrationValidation(userDTO);
-        if (validation.equalsIgnoreCase("Registration Done")) {
-            model.addAttribute("registerSuccess", validation);
-            return "register";
-        } else if (validation.equalsIgnoreCase("Registration Failed...!")) {
-            model.addAttribute("registerFailed", validation);
-            return "register";
-        } else if (validation.equalsIgnoreCase("User already exist")) {
-            model.addAttribute("existData", validation);
+
+
+
+        // Confirm password validation
+        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+            model.addAttribute("confirmPasswordError", "Passwords do not match");
+            model.addAttribute("userDTO", userDTO);
             return "register";
         }
+
+        // File validation
+        if (userDTO.getFile() == null || userDTO.getFile().isEmpty()) {
+            model.addAttribute("fileError", "Please upload a file");
+            model.addAttribute("userDTO", userDTO);
+            return "register";
+        }
+
+        String contentType = userDTO.getFile().getContentType();
+
+        if (!(contentType.equals("image/jpeg") ||
+                contentType.equals("image/png") ||
+                contentType.equals("application/pdf"))) {
+
+            model.addAttribute("fileError", "Only JPG, PNG, PDF allowed");
+            model.addAttribute("userDTO", userDTO);
+            return "register";
+        }
+
+        if (userDTO.getFile().getSize() > 2 * 1024 * 1024) {
+            model.addAttribute("fileError", "File must be less than 2MB");
+            model.addAttribute("userDTO", userDTO);
+            return "register";
+        }
+
+
+        String validation = userService.registrationValidation(userDTO);
+
+        if (validation.equalsIgnoreCase("Registration Done")) {
+            model.addAttribute("registerSuccess", validation);
+        } else if (validation.equalsIgnoreCase("Registration Failed...!")) {
+            model.addAttribute("registerFailed", validation);
+        } else if (validation.equalsIgnoreCase("User already exist")) {
+            model.addAttribute("existData", validation);
+        }
+
         return "register";
+    }
+
+//    @PostMapping("/emailCheck")
+//    public String emailVerification(String email ) {
+//        UserDTO user = userService.checkingExistUserByEmail(email);
+//        if (user!=null){
+//            return "resetPassword";
+//        }else {
+//            return "forgotPassword";
+//        }
+//    }
+
+    @PostMapping("/emailCheck")
+    public String emailVerification(String email, Model model) {
+
+        UserDTO user = userService.checkingExistUserByEmail(email);
+
+        if (user != null) {
+            model.addAttribute("email", email); // ✅ pass email
+            return "resetPassword";
+        } else {
+            model.addAttribute("error", "Email not found");
+            return "forgotPassword";
+        }
+    }
+
+//    @PostMapping("/updatePassword")
+//    public String updatePassword(UserDTO userDTO, Model model){
+//        boolean updatingPassword = userService.updatingPassword(userDTO);
+//        if (updatingPassword){
+//            model.addAttribute("updatedSuccessfully","Your password updated you can login now");
+//            return "resetPassword";
+//        }
+//        model.addAttribute("updateFail","Please check the password...!");
+//        return "resetPassword";
+//    }
+
+    @PostMapping("/updatePassword")
+    public String updatePassword(UserDTO userDTO, Model model) {
+
+        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
+            model.addAttribute("updateFail", "Passwords do not match");
+            model.addAttribute("email", userDTO.getEmail());
+            return "resetPassword";
+        }
+
+        boolean updatingPassword = userService.updatingPassword(userDTO);
+
+        if (updatingPassword) {
+            model.addAttribute("updatedSuccessfully", "Your password updated, you can login now");
+            return "index";
+        }
+
+        model.addAttribute("updateFail", "Please check the password...!");
+        return "resetPassword";
     }
 
 }

@@ -4,7 +4,4 @@ public interface LoginService {
 
     String loginValidation(String email, String password);
 
-
-
-
 }

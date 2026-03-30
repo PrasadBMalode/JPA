@@ -29,6 +29,7 @@ public class UserDAOImpl implements UserDAO {
             return false;
         } finally {
             entityManager.close();
+
         }
 
 
@@ -50,5 +51,23 @@ public class UserDAOImpl implements UserDAO {
             return null;
         }
 
+    }
+
+    @Override
+    public boolean updatingPasswordInDB(UserEntity userEntity) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            UserEntity entity = entityManager.merge(userEntity);
+            transaction.commit();
+           return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+
+        }finally {
+            entityManager.close();
+        }
     }
 }

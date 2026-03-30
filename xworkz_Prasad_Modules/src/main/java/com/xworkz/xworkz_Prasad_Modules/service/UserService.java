@@ -7,4 +7,8 @@ public interface UserService {
     String registrationValidation(UserDTO userDTO);
 
     UserDTO checkingExistUserByEmail(String email);
+
+    boolean updatingPassword(UserDTO userDTO);
+
+
 }
