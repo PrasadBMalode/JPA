@@ -1,6 +1,7 @@
 package com.xworkz.xworkz_Prasad_Modules.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -19,6 +20,7 @@ public class FileEntity {
     private String path;
 
     @OneToOne(mappedBy = "fileEntity")
+    @ToString.Exclude
     private UserEntity user;
 
 }

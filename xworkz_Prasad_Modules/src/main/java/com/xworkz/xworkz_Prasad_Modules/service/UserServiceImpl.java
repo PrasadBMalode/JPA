@@ -60,7 +60,8 @@ public class UserServiceImpl implements UserService {
                 }
 
                 //Save file physically
-                Path filePath = Paths.get("J:\\xworkz\\projectImages\\" + file.getOriginalFilename() + System.currentTimeMillis() + ".jpg");
+                //Path filePath = Paths.get("J:\\xworkz\\projectImages\\" + file.getOriginalFilename() + System.currentTimeMillis() + ".jpg");
+
 
 
                 boolean saveDB = userDAO.userSaveDB(userEntity);
@@ -82,6 +83,10 @@ public class UserServiceImpl implements UserService {
         if (userEntity != null) {
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(userEntity, userDTO);
+
+            // manually set fileEntity
+            userDTO.setFileEntity(userEntity.getFileEntity());
+
             return userDTO;
         }
         return null;
@@ -96,6 +101,26 @@ public class UserServiceImpl implements UserService {
 //    }
 
 
+//    @Override
+//    public boolean updatingPassword(UserDTO userDTO) {
+//
+//        try {
+//            String encryptedPassword = CryptoUtil.encrypt(userDTO.getPassword());
+//            userDTO.setPassword(encryptedPassword);
+//
+//            UserEntity userEntity = userDAO.checkingExistUserInDBByEmail(userDTO.getEmail());
+//
+//            if (userEntity != null) {
+//                userEntity.setPassword(encryptedPassword);
+//                return userDAO.updatingPasswordInDB(userEntity);
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//
+//        return false;
+//    }
+
     @Override
     public boolean updatingPassword(UserDTO userDTO) {
 
@@ -106,9 +131,16 @@ public class UserServiceImpl implements UserService {
             UserEntity userEntity = userDAO.checkingExistUserInDBByEmail(userDTO.getEmail());
 
             if (userEntity != null) {
+
                 userEntity.setPassword(encryptedPassword);
+
+                // ✅ IMPORTANT FIXES
+                userEntity.setAccountLocked(false);   // unlock account
+                userEntity.setLoginAttempts(0);       // reset attempts
+
                 return userDAO.updatingPasswordInDB(userEntity);
             }
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

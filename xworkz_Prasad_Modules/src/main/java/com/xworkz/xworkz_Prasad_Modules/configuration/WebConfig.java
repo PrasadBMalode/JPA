@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -49,7 +51,7 @@ public class WebConfig {
     }
     public Properties properties(){
         Properties properties=new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto","update");
+        properties.setProperty("hibernate.hbm2ddl.auto","create-drop");
 
         return properties;
     }
@@ -57,9 +59,29 @@ public class WebConfig {
     @Bean("multipartResolver")
     public CommonsMultipartResolver commonsMultipartResolver(){
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(120574);
-        multipartResolver.setMaxInMemorySize(120574);
+        multipartResolver.setMaxUploadSize(5 * 1024 * 1024); // 5MB
+        multipartResolver.setMaxInMemorySize(5 * 1024 * 1024);
 
         return multipartResolver;
+    }
+
+
+    @Bean
+    public JavaMailSender javaMailSender(){
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+        javaMailSender.setHost("smtp.gmail.com");
+        javaMailSender.setPort(587);
+
+        javaMailSender.setUsername("malodeprasad666@gmail.com");
+        javaMailSender.setPassword("fglw fepj xaum mgac");
+
+        Properties properties = javaMailSender.getJavaMailProperties();
+
+        properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.debug", "true");
+
+        return  javaMailSender;
     }
 }

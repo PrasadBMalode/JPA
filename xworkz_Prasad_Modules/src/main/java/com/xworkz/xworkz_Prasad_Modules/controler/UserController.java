@@ -1,7 +1,9 @@
 package com.xworkz.xworkz_Prasad_Modules.controler;
 
 import com.xworkz.xworkz_Prasad_Modules.dto.UserDTO;
+import com.xworkz.xworkz_Prasad_Modules.service.OtpService;
 import com.xworkz.xworkz_Prasad_Modules.service.UserService;
+import com.xworkz.xworkz_Prasad_Modules.utility.OTPVerificationMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -18,6 +21,12 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OtpService otpService;
+
+    @Autowired
+    OTPVerificationMail otpVerificationMail;
 
     public UserController() {
         System.out.println("User Controller...");
@@ -138,58 +147,102 @@ public class UserController {
         return "register";
     }
 
-//    @PostMapping("/emailCheck")
-//    public String emailVerification(String email ) {
-//        UserDTO user = userService.checkingExistUserByEmail(email);
-//        if (user!=null){
-//            return "resetPassword";
-//        }else {
-//            return "forgotPassword";
-//        }
-//    }
+
 
     @PostMapping("/emailCheck")
-    public String emailVerification(String email, Model model) {
+    public String sendOtp(String email, Model model, HttpSession session) {
 
         UserDTO user = userService.checkingExistUserByEmail(email);
 
-        if (user != null) {
-            model.addAttribute("email", email); // ✅ pass email
-            return "resetPassword";
-        } else {
-            model.addAttribute("error", "Email not found");
+        if (user == null) {
+            model.addAttribute("emailError", "Email not found");
             return "forgotPassword";
         }
+
+        // Generate + send OTP
+        //String otp = otpVerificationMail.sendOTP(email);
+
+        otpService.sendOtp(email);
+
+        // Store OTP + email in session
+        //session.setAttribute("otp", otp);
+        //session.setAttribute("email", email);
+        //session.setAttribute("otpTime", System.currentTimeMillis());
+
+        model.addAttribute("message", "OTP sent successfully");
+
+        return "forgotPassword"; // page stays same, modal will open via JS
     }
 
-//    @PostMapping("/updatePassword")
-//    public String updatePassword(UserDTO userDTO, Model model){
-//        boolean updatingPassword = userService.updatingPassword(userDTO);
-//        if (updatingPassword){
-//            model.addAttribute("updatedSuccessfully","Your password updated you can login now");
+//    @PostMapping("/verifyOtp")
+//    public String verifyOtp(String otp, HttpSession session, Model model) {
+//
+//        String sessionOtp = (String) session.getAttribute("otp");
+//        String email = (String) session.getAttribute("email");
+//        Long otpTime = (Long) session.getAttribute("otpTime");
+//
+//        // ✅ STEP 1: CHECK OTP EXPIRY FIRST
+//        if (otpTime == null || System.currentTimeMillis() - otpTime > 300000) {
+//            model.addAttribute("otpError", "OTP expired. Please try again.");
+//
+//            // optional but recommended
+//            session.removeAttribute("otp");
+//            session.removeAttribute("otpTime");
+//
+//            return "forgotPassword";
+//        }
+//
+//        // ✅ STEP 2: CHECK OTP MATCH
+//        if (sessionOtp != null && sessionOtp.equals(otp)) {
+//
+//            model.addAttribute("email", email);
+//
+//            // clear session after success
+//            session.removeAttribute("otp");
+//            session.removeAttribute("otpTime");
+//
 //            return "resetPassword";
 //        }
-//        model.addAttribute("updateFail","Please check the password...!");
-//        return "resetPassword";
+//
+//        // ❌ WRONG OTP
+//        model.addAttribute("otpError", "Invalid OTP");
+//        return "forgotPassword";
 //    }
 
-    @PostMapping("/updatePassword")
-    public String updatePassword(UserDTO userDTO, Model model) {
+    @PostMapping("/verifyOtp")
+    public String verifyOtp(String email, String otp, Model model) {
 
-        if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
-            model.addAttribute("updateFail", "Passwords do not match");
-            model.addAttribute("email", userDTO.getEmail());
+        boolean isValid = otpService.verifyOtp(email, otp);
+
+        if (isValid) {
+            model.addAttribute("email", email);
             return "resetPassword";
         }
 
+        model.addAttribute("otpError", "Invalid / Expired OTP");
+        return "forgotPassword";
+    }
+
+    @PostMapping("/resendOtp")
+    public String resendOtp(String email, Model model) {
+
+        otpService.sendOtp(email);
+
+        model.addAttribute("message", "OTP resent successfully");
+        model.addAttribute("email", email);
+
+        return "forgotPassword";
+    }
+
+
+    @PostMapping("/updatePassword")
+    public String updatePassword(UserDTO userDTO, Model model){
         boolean updatingPassword = userService.updatingPassword(userDTO);
-
-        if (updatingPassword) {
-            model.addAttribute("updatedSuccessfully", "Your password updated, you can login now");
-            return "index";
+        if (updatingPassword){
+            model.addAttribute("updatedSuccessfully","Your password updated you can login now");
+            return "resetPassword";
         }
-
-        model.addAttribute("updateFail", "Please check the password...!");
+        model.addAttribute("updateFail","Please check the password...!");
         return "resetPassword";
     }
 

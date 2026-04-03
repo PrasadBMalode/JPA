@@ -1,4 +1,6 @@
 <%@ page isELIgnored="false" %>
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
     <% String email=(String) session.getAttribute("loggedInEmail"); String firstLetter="" ; if (email !=null &&
         !email.isEmpty()) { firstLetter=email.substring(0, 1).toUpperCase(); } %>
@@ -106,11 +108,15 @@
                     <div class="ms-auto dropdown">
 
                         <!-- Circle Avatar -->
-                        <button
+                        <!-- <button
                             class="btn dropdown-toggle d-flex align-items-center justify-content-center rounded-circle avatar-btn"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <%= firstLetter %>
-                        </button>
+                        </button> -->
+
+
+                        <img src="download?imagePath=${imagePath}" class="rounded-circle"
+                            style="width:50px;height:50px;object-fit:cover;cursor:pointer;" data-bs-toggle="dropdown">
 
                         <!-- Dropdown Menu -->
                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">

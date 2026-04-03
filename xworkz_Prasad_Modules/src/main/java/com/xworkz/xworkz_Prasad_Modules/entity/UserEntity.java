@@ -3,6 +3,7 @@ package com.xworkz.xworkz_Prasad_Modules.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -34,8 +35,9 @@ public class UserEntity {
     private Boolean accountLocked=false;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_file_id")
+    @ToString.Exclude
     private FileEntity fileEntity;
 
 }

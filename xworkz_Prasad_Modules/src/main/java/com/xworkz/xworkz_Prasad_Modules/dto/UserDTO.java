@@ -1,5 +1,6 @@
 package com.xworkz.xworkz_Prasad_Modules.dto;
 
+import com.xworkz.xworkz_Prasad_Modules.entity.FileEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,6 +54,8 @@ public class UserDTO {
 
 
     private MultipartFile file;
+
+    private FileEntity fileEntity;
 
 
 }

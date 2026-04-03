@@ -2,6 +2,8 @@ package com.xworkz.xworkz_Prasad_Modules.controler;
 
 import com.xworkz.xworkz_Prasad_Modules.dto.UserDTO;
 import com.xworkz.xworkz_Prasad_Modules.service.ViewService;
+import com.xworkz.xworkz_Prasad_Modules.utility.OTPVerificationMail;
+import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 @Controller
@@ -62,15 +68,43 @@ public class ViewController {
     }
 
     @PostMapping("/updateProfile")
-    public String updatingUserData(UserDTO userDTO,Model model){
+    public String updatingUserData(UserDTO userDTO,
+                                   @RequestParam(value = "file", required = false) MultipartFile file,
+                                   Model model) {
 
-        boolean updated = viewService.updateExistUserData(userDTO);
+        boolean updated = viewService.updateFullProfile(userDTO, file);
+
         if (updated){
             model.addAttribute("updateSuccess","Your Data Successfully Updated ");
-            return "profile";
-        }else {
+        } else {
             model.addAttribute("updateFailed","Your Data has been not updated");
-            return "profile";
+        }
+
+        // reload fresh data
+        UserDTO dto = viewService.readUsearToUpdateData(userDTO.getEmail());
+        model.addAttribute("dto", dto);
+        model.addAttribute("timestamp", System.currentTimeMillis());
+
+        return "profile";
+    }
+
+    @GetMapping("/download")
+    public void getImage(@RequestParam String imagePath, HttpServletResponse response) {
+        try {
+            String fullPath = "J:\\xworkz\\projectImages\\" + imagePath;
+
+            File file = new File(fullPath);
+            FileInputStream fis = new FileInputStream(file);
+
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+
+            response.setContentType("image/jpeg");
+            StreamUtils.copy(fis, response.getOutputStream());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

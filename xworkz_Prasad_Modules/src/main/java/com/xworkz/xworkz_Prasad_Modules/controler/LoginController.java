@@ -1,6 +1,7 @@
 package com.xworkz.xworkz_Prasad_Modules.controler;
 
 import com.xworkz.xworkz_Prasad_Modules.dto.LoginDTO;
+import com.xworkz.xworkz_Prasad_Modules.dto.UserDTO;
 import com.xworkz.xworkz_Prasad_Modules.service.LoginService;
 import com.xworkz.xworkz_Prasad_Modules.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,13 @@ public class LoginController {
 
         if (result.equalsIgnoreCase("LOGIN_SUCCESS")) {
             httpSession.setAttribute("loggedInEmail", loginDTO.getEmail());
-            model.addAttribute("email", loginDTO.getEmail());
+            //model.addAttribute("email", loginDTO.getEmail());
+            // ✅ FETCH USER DATA
+            UserDTO userDTO = userService.checkingExistUserByEmail(loginDTO.getEmail());
+
+            if (userDTO != null && userDTO.getFileEntity() != null) {
+                model.addAttribute("imagePath", userDTO.getFileEntity().getFile());
+            }
             return "loginSuccess";
 
         } else if (result.equalsIgnoreCase("EMAIL_NOT_FOUND")) {
