@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -170,24 +171,38 @@ public class UserController {
 //        return "forgotPassword"; // page stays same, modal will open via JS
 //    }
 
+//    @PostMapping("/emailCheck")
+//    public String sendOtp(String email, Model model) {
+//
+//        UserDTO user = userService.checkingExistUserByEmail(email);
+//
+//        if (user == null) {
+//            model.addAttribute("emailError", "Email not found");
+//            model.addAttribute("showOtpPopup", false); // ❗ important
+//            return "forgotPassword";
+//        }
+//
+//        otpService.sendOtp(email);
+//
+//        model.addAttribute("message", "OTP sent successfully");
+//        model.addAttribute("email", email);
+//        model.addAttribute("showOtpPopup", true); // ❗ only true when email exists
+//
+//        return "forgotPassword";
+//    }
+
     @PostMapping("/emailCheck")
-    public String sendOtp(String email, Model model) {
+    @ResponseBody
+    public String sendOtp(String email) {
 
         UserDTO user = userService.checkingExistUserByEmail(email);
 
         if (user == null) {
-            model.addAttribute("emailError", "Email not found");
-            model.addAttribute("showOtpPopup", false); // ❗ important
-            return "forgotPassword";
+            return "NOT_FOUND";
         }
 
         otpService.sendOtp(email);
-
-        model.addAttribute("message", "OTP sent successfully");
-        model.addAttribute("email", email);
-        model.addAttribute("showOtpPopup", true); // ❗ only true when email exists
-
-        return "forgotPassword";
+        return "SUCCESS";
     }
 
     @PostMapping("/verifyOtp")

@@ -60,11 +60,11 @@
 
         <h4 class="text-center mb-3">Email Verification</h4>
 
-        <form id="emailForm" action="emailCheck" method="post">
+        <form action="emailCheck" method="post" id="emailForm" >
             <div class="mb-3">
                 <label class="form-label">Email address</label>
                 <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
-                <small class="text-danger">${emailError}</small>
+                <small class="text-danger" id="emailErrorBox"></small>
             </div>
 
             <div class="d-grid">
@@ -86,13 +86,13 @@
             </div>
 
             <div class="modal-body">
-                <form action="verifyOtp" method="post">
+                <form action="verifyOtp" method="post" onsubmit="return validateOtpTime()">
                     <input type="hidden" name="email" id="otpEmail">
 
                     <div class="mb-3">
                         <label class="form-label">OTP</label>
                         <input type="text" name="otp" class="form-control" maxlength="6" pattern="\d{6}" placeholder="Enter 6-digit OTP" required>
-                        <small class="text-danger">${otpError}</small>
+                        <small class="text-danger" id="otpErrorBox">${otpError}</small>
                     </div>
 
                     <div class="d-grid mb-2">
@@ -132,6 +132,9 @@ function startTimer() {
             clearInterval(timerInterval);
             timer.innerHTML = "You can resend OTP now";
             resendBtn.disabled = false;
+
+            document.querySelector("input[name='otp']").disabled = true;
+
             return;
         }
 
@@ -139,6 +142,22 @@ function startTimer() {
         countdown--;
     }, 1000);
 }
+
+
+
+function validateOtpTime() {
+
+    let errorBox = document.getElementById("otpErrorBox");
+
+    if (countdown <= 0) {
+        errorBox.innerHTML = "Wrong OTP or Time expired! Please resend OTP.";
+        return false;
+    }
+
+    return true;
+}
+
+
 
 function sendOtp() {
     let email = document.getElementById("email").value;
@@ -155,7 +174,9 @@ function sendOtp() {
     })
     .then(response => response.text())
     .then(data => {
-        if (data.includes("OTP sent successfully")) {
+
+        if (data === "SUCCESS") {
+
             document.getElementById("otpEmail").value = email;
 
             let otpModal = new bootstrap.Modal(document.getElementById('otpModal'));
@@ -163,12 +184,18 @@ function sendOtp() {
 
             countdown = 30;
             startTimer();
-        } else {
-            document.body.innerHTML = data;
+
+        } else if (data === "NOT_FOUND") {
+
+            document.getElementById("emailErrorBox").innerHTML = "Email not found";
+
         }
+
     })
     .catch(error => console.error("Error:", error));
 }
+
+
 
 function resendOtp() {
     if (countdown > 0) {
@@ -186,12 +213,24 @@ function resendOtp() {
     .then(response => response.text())
     .then(() => {
         alert("OTP resent successfully!");
+        document.querySelector("input[name='otp']").disabled = false;
         countdown = 30;
         startTimer();
     })
     .catch(error => console.error(error));
 }
 </script>
+
+<c:if test="${showOtpPopup}">
+    <script>
+        document.getElementById("otpEmail").value = "${email}";
+        let otpModal = new bootstrap.Modal(document.getElementById('otpModal'));
+        otpModal.show();
+
+        countdown = 30;
+        startTimer();
+    </script>
+</c:if>
 
 </body>
 </html>
