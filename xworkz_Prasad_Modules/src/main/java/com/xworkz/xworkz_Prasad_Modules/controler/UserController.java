@@ -100,8 +100,6 @@ public class UserController {
             return "register";
         }
 
-
-
         // Confirm password validation
         if (!userDTO.getPassword().equals(userDTO.getConfirmPassword())) {
             model.addAttribute("confirmPasswordError", "Passwords do not match");
@@ -147,67 +145,50 @@ public class UserController {
         return "register";
     }
 
+//    @PostMapping("/emailCheck")
+//    public String sendOtp(String email, Model model, HttpSession session) {
+//
+//        UserDTO user = userService.checkingExistUserByEmail(email);
+//
+//        if (user == null) {
+//            model.addAttribute("emailError", "Email not found");
+//            return "forgotPassword";
+//        }
 
+    // Generate + send OTP
+    //String otp = otpVerificationMail.sendOTP(email);
+
+    //otpService.sendOtp(email);
+
+    // Store OTP + email in session
+    //session.setAttribute("otp", otp);
+    //session.setAttribute("email", email);
+    //session.setAttribute("otpTime", System.currentTimeMillis());
+
+//        model.addAttribute("message", "OTP sent successfully");
+//
+//        return "forgotPassword"; // page stays same, modal will open via JS
+//    }
 
     @PostMapping("/emailCheck")
-    public String sendOtp(String email, Model model, HttpSession session) {
+    public String sendOtp(String email, Model model) {
 
         UserDTO user = userService.checkingExistUserByEmail(email);
 
         if (user == null) {
             model.addAttribute("emailError", "Email not found");
+            model.addAttribute("showOtpPopup", false); // ❗ important
             return "forgotPassword";
         }
 
-        // Generate + send OTP
-        //String otp = otpVerificationMail.sendOTP(email);
-
         otpService.sendOtp(email);
 
-        // Store OTP + email in session
-        //session.setAttribute("otp", otp);
-        //session.setAttribute("email", email);
-        //session.setAttribute("otpTime", System.currentTimeMillis());
-
         model.addAttribute("message", "OTP sent successfully");
+        model.addAttribute("email", email);
+        model.addAttribute("showOtpPopup", true); // ❗ only true when email exists
 
-        return "forgotPassword"; // page stays same, modal will open via JS
+        return "forgotPassword";
     }
-
-//    @PostMapping("/verifyOtp")
-//    public String verifyOtp(String otp, HttpSession session, Model model) {
-//
-//        String sessionOtp = (String) session.getAttribute("otp");
-//        String email = (String) session.getAttribute("email");
-//        Long otpTime = (Long) session.getAttribute("otpTime");
-//
-//        // ✅ STEP 1: CHECK OTP EXPIRY FIRST
-//        if (otpTime == null || System.currentTimeMillis() - otpTime > 300000) {
-//            model.addAttribute("otpError", "OTP expired. Please try again.");
-//
-//            // optional but recommended
-//            session.removeAttribute("otp");
-//            session.removeAttribute("otpTime");
-//
-//            return "forgotPassword";
-//        }
-//
-//        // ✅ STEP 2: CHECK OTP MATCH
-//        if (sessionOtp != null && sessionOtp.equals(otp)) {
-//
-//            model.addAttribute("email", email);
-//
-//            // clear session after success
-//            session.removeAttribute("otp");
-//            session.removeAttribute("otpTime");
-//
-//            return "resetPassword";
-//        }
-//
-//        // ❌ WRONG OTP
-//        model.addAttribute("otpError", "Invalid OTP");
-//        return "forgotPassword";
-//    }
 
     @PostMapping("/verifyOtp")
     public String verifyOtp(String email, String otp, Model model) {
@@ -220,6 +201,9 @@ public class UserController {
         }
 
         model.addAttribute("otpError", "Invalid / Expired OTP");
+        model.addAttribute("showOtpPopup", true); // keep popup open again
+        model.addAttribute("email", email);
+
         return "forgotPassword";
     }
 
@@ -236,13 +220,13 @@ public class UserController {
 
 
     @PostMapping("/updatePassword")
-    public String updatePassword(UserDTO userDTO, Model model){
+    public String updatePassword(UserDTO userDTO, Model model) {
         boolean updatingPassword = userService.updatingPassword(userDTO);
-        if (updatingPassword){
-            model.addAttribute("updatedSuccessfully","Your password updated you can login now");
+        if (updatingPassword) {
+            model.addAttribute("updatedSuccessfully", "Your password updated you can login now");
             return "resetPassword";
         }
-        model.addAttribute("updateFail","Please check the password...!");
+        model.addAttribute("updateFail", "Please check the password...!");
         return "resetPassword";
     }
 

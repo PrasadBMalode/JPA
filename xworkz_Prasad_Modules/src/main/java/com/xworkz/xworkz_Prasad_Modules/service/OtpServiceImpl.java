@@ -23,7 +23,7 @@ public class OtpServiceImpl implements OtpService {
         OtpEntity entity = new OtpEntity();
         entity.setEmail(email);
         entity.setOtp(otp);
-        entity.setExpiryTime(System.currentTimeMillis() + (5 * 60 * 1000));
+        entity.setExpiryTime(System.currentTimeMillis() + (30 * 1000)); // 30 sec
         entity.setAttempts(0);
 
         otpDAO.saveOtp(entity);
@@ -38,23 +38,27 @@ public class OtpServiceImpl implements OtpService {
 
         // expiry
         if (System.currentTimeMillis() > entity.getExpiryTime()) {
-            otpDAO.deleteByEmail(email);
-            return false;
+            return false; // ❗ no delete
         }
 
         // attempts
         if (entity.getAttempts() >= 3) {
-            otpDAO.deleteByEmail(email);
-            return false;
+            return false; // ❗ no delete
         }
 
-        // match
+        // correct OTP
         if (entity.getOtp().equals(userOtp)) {
-            otpDAO.deleteByEmail(email);
+
+            // ✔ clear only OTP fields (NOT delete row)
+            entity.setOtp(null);
+            entity.setExpiryTime(0);
+            entity.setAttempts(0);
+
+            otpDAO.saveOtp(entity);
             return true;
         }
 
-        // wrong → increment attempts
+        // wrong OTP
         entity.setAttempts(entity.getAttempts() + 1);
         otpDAO.saveOtp(entity);
 

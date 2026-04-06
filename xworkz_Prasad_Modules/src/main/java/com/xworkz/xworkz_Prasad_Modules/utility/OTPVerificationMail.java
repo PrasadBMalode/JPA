@@ -17,33 +17,18 @@ public class OTPVerificationMail {
         Random random = new Random();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
-
     }
-
-//    public String oTPVerificationMail() {
-//
-//        String otp = getOTP();
-//
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        mailMessage.setFrom("malodeprasad666@gmail.com");
-//        mailMessage.setTo("prasadbm666@gmail.com");
-//        mailMessage.setSubject("OTP");
-//        mailMessage.setText("Your OTP is: " + otp);
-//
-//        return otp;
-//    }
-
     public String sendOTP(String toEmail) {
 
         String otp = getOTP();
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom("your-email@gmail.com");
-        mailMessage.setTo(toEmail); // ✅ dynamic email
+        mailMessage.setFrom("malodeprasad666@gmail.com");
+        mailMessage.setTo(toEmail);
         mailMessage.setSubject("OTP Verification");
         mailMessage.setText("Your OTP is: " + otp);
 
-        javaMailSender.send(mailMessage); // ✅ SEND EMAIL
+        javaMailSender.send(mailMessage);
 
         return otp;
     }

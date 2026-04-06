@@ -51,11 +51,10 @@ public class WebConfig {
     }
     public Properties properties(){
         Properties properties=new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto","create-drop");
+        properties.setProperty("hibernate.hbm2ddl.auto","update");
 
         return properties;
     }
-
     @Bean("multipartResolver")
     public CommonsMultipartResolver commonsMultipartResolver(){
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver();
@@ -64,8 +63,6 @@ public class WebConfig {
 
         return multipartResolver;
     }
-
-
     @Bean
     public JavaMailSender javaMailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();

@@ -66,7 +66,7 @@ public class ViewServiceImpl implements ViewService {
                     Path path = Paths.get(fullPath);
                     file.transferTo(path.toFile());
 
-                    // ✅ FIX: ALWAYS CREATE NEW ENTITY (DON'T REUSE OLD)
+                    // ALWAYS CREATE NEW ENTITY (DON'T REUSE OLD)
                     FileEntity fileEntity = new FileEntity();
 
                     fileEntity.setFile(fileName);
@@ -74,7 +74,7 @@ public class ViewServiceImpl implements ViewService {
                     fileEntity.setContentType(file.getContentType());
                     fileEntity.setSize(file.getSize());
 
-                    // ✅ FIX: SET BOTH SIDES
+                    // SET BOTH SIDES
                     fileEntity.setUser(existingUser);
                     existingUser.setFileEntity(fileEntity);
                 }
